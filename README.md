@@ -1,4 +1,5 @@
 # GoMultiSocket
+![Go Report Card](https://goreportcard.com/badge/github.com/cploutarchou/GoMultiSocket)
 
 A SOLID Go WebSocket implementation with support for multiple topics.
 
@@ -119,10 +120,5 @@ socket.onclose = function() {
 This project is licensed under the MIT License - see the [LICENSE](LICENCE) file for details.
 
 
-### Additional Notes:
-- **Badges**:
-    ```md
-    ![Go Report Card](https://goreportcard.com/badge/github.com/cploutarchou/GoMultiSocket)
-    ```
 
 
