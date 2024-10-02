@@ -7,28 +7,21 @@ type Topic struct {
 	sync.RWMutex
 }
 
-func (t *Topic) Broadcast(content []byte) {
+// Broadcast sends the JSON-encoded message to all clients subscribed to the topic.
+func (t *Topic) Broadcast(message *Message) {
+	jsonMessage := message.ToJSON()
+	if jsonMessage == nil {
+		return
+	}
+
 	t.RLock()
 	defer t.RUnlock()
 	for client := range t.clients {
 		select {
-		case client.send <- content:
+		case client.send <- jsonMessage:
 		default:
 			close(client.send)
 			delete(t.clients, client)
 		}
 	}
-}
-
-func (h *Hub) CreateOrGetTopic(topicName string) *Topic {
-	h.Lock()
-	defer h.Unlock()
-	if topic, ok := h.topics[topicName]; ok {
-		return topic
-	}
-	newTopic := &Topic{
-		clients: make(map[*Client]bool),
-	}
-	h.topics[topicName] = newTopic
-	return newTopic
 }
